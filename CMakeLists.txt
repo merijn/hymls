@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.15.0)
 project(HYMLS C CXX)
 
+if (DEFINED ENV{TRILINOS_DIR} AND NOT DEFINED Trilinos_DIR)
+  set (Trilinos_DIR $ENV{TRILINOS_DIR}/lib/cmake/Trilinos)
+  message("FOO" ${Trilinos_DIR})
+elseif (APPLE AND NOT DEFINED ENV{TRILINOS_DIR} AND NOT DEFINED Trilinos_DIR)
+  # By default look in the homebrew install directory
+  set (Trilinos_DIR /usr/local/opt/trilinos/lib/cmake/Trilinos/)
+  message("BAR" ${Trilinos_DIR})
+endif ()
+
 # Some options
 option(HYMLS_USE_OPENMP OFF "allow using multi-threading inside HYMLS")
 

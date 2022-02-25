@@ -31,19 +31,17 @@ jobs:
           - os: macos-latest
             cmake-options: '-DCMAKE_BUILD_TYPE=Debug'
             env:
-              CMAKE_PREFIX_PATH: /usr/local/opt/trilinos/
               CC: gcc
               CXX: g++
               FC: gfortran-10
-            experimental: true
+            experimental: false
           - os: macos-latest
             cmake-options: '-DCMAKE_BUILD_TYPE=Debug'
             env:
-              CMAKE_PREFIX_PATH: /usr/local/opt/trilinos/
               CC: clang
               CXX: clang++
               FC: gfortran-10
-            experimental: true
+            experimental: false
 
     runs-on: ${{ matrix.os }}
     env: ${{ matrix.env }}
@@ -54,12 +52,15 @@ jobs:
 
       - name: Install dependencies (Linux)
         run: |
+          sudo apt-get update
           sudo apt-get install gfortran libopenblas-dev libhdf5-openmpi-dev libptscotch-dev trilinos-all-dev
         if: matrix.os == 'ubuntu-20.04'
 
       - name: Install dependencies (MacOS)
         run: |
           brew tap nlesc/nlesc
+          brew update
+          brew upgrade
           brew install nlesc/nlesc/trilinos
         if: matrix.os == 'macos-latest'
 
